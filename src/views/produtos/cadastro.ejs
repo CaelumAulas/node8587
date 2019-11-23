@@ -13,7 +13,11 @@
     <div class="container">
         <h1>Cadastro de Livros</h1>
 
-        <form action="detalhe" method="post" class="col-6">
+        <% if (validationErrors) { %>
+        <h2><%= validationErrors.errors[0].msg %></h2>
+        <% } %>
+
+        <form action="salvar" method="post" class="col-6">
             <div class="form-group">
                 <label for="titulo">Titulo</label>
                 <input value="" id="titulo" name="titulo" type="text" class="form-control">
