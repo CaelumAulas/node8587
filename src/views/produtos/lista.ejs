@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <title>Produtos</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            Produtos
+            <a href="/produtos/cadastro" class="btn btn-primary">Cadastrar</a>
+        </h1>
+
+        <table class="table table-condensed table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Preço</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let livro of listaLivros){ %>
+                <tr>
+                    <td><%= livro.titulo %></td>
+                    <td><%= livro.preco %></td>
+                    <td><%= livro.descricao %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+
+    </div>
+
+</body>
+
+</html>
