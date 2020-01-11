@@ -1,6 +1,9 @@
-const port = 3000;
-const app = require('./custom-express');
+require('dotenv').config();
+const port = process.env.SERVER_PORT;
 
-app.listen(port, function () {
-    console.log(`Servidor subindo em http://localhost:${port}`);
+const app = require('./custom-express')
+
+// subir o a instacia(cópia preenchida) do servidor com express
+app.listen(port, function(){    
+    console.log('O servidor subiu na porta ' + port)
 })

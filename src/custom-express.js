@@ -1,34 +1,46 @@
+const consign = require('consign');
 const express = require('express');
+
 const app = express();
-const consign = require("consign");
-const bodyParser = require("body-parser");
 
-app.set('view engine', 'ejs');
-app.set('views', 'src/views');
+app.set('view engine', 'ejs')
+app.set('views', 'src/views')
 
-app.use('/static', express.static('node_modules/bootstrap/dist'));
-app.use('/assets', express.static('src/assets/'));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/static", express.static('node_modules/bootstrap/dist')); // static é um apelido pra linha
+app.use("/assets", express.static('src/assets/'));
+
+// consign()
+//  .include('src/routes')
+//  .into(app)
+
+// Código por debaixo do consign
+require('./routes/index')(app)
+require('./routes/produtos')(app)
+require('./routes/promocoes')(app)
 
 
-// app.get('/', function (request, response) {
-//   response.render('index');
-// });
+app.use(function(request, response, next){
+    console.log("Página não encontrada: " + request.url)
+    next()
+});
 
-//require('./routes/produtos')(app);
-
-consign()
-.include('src/routes')
-.into(app)
-
-//middleware de not found (caso nenhuma das rotas sejam carregadas)
-app.use(function(request,response, next){
-  response.status(404).render("erros/404");
+app.use(function(request, response){
+    response
+        .status(404)
+        .format({
+            html: () =>  response.render('erros/404')
+            ,json: () => response.send({message: "Não encontrado"})
+            ,'application/xml': () => response.send(libXML("Não encontrado"))
+        })
 })
 
-//middleware de erros
-app.use(function(erro,request, response, next){
-  response.status(500).render("erros/500", { erro });
+app.use(function(erro, request, response, next){
+    response.status(500).render('erros/500', { erro })
+
+    if(process.env.NODE_ENV === 'development') {
+        console.error(erro.message)
+        console.error(erro.stack)
+    }
 });
 
 module.exports = app;
