@@ -7,8 +7,21 @@ class ProdutoController {
             if(erro) {
                 next(erro)
             }
-    
-            response.render('produtos/lista',{listaLivros:resultados})
+
+            // MIME Type
+            // if (request.get('Accept') === 'text/html'){
+            //     response.render('produtos/lista',{listaLivros:resultados}) // isso renderiza numa tela
+            // } else if(request.get('Accept') === 'application/json') {
+            //     response.send(resultados)
+            // } else {
+            //     next(new Error("Formato não suportado"))
+            // }
+
+            response.format({
+                 html: () =>  response.render('produtos/lista',{listaLivros:resultados}) // isso renderiza numa tela
+                ,json: () => response.send(resultados)
+                ,'application/xml': () => response.send(libXML(resultados))
+            })
         }
         produtoDAO.listar(callback)
     }

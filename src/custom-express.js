@@ -35,7 +35,13 @@ app.use(function(request, response){
 })
 
 app.use(function(erro, request, response, next){
-    response.status(500).render('erros/500', { erro })
+    response
+        .status(500)
+        .format({
+            html: () =>  response.render('erros/500', { erro })
+        ,json: () => response.send({message: "Não encontrado"})
+        ,'application/xml': () => response.send(libXML(erro))
+        })
 
     if(process.env.NODE_ENV === 'development') {
         console.error(erro.message)
