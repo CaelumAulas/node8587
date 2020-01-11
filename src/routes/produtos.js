@@ -13,5 +13,5 @@ module.exports = function(app){
     app.post("/produtos/salvar", bodyParser.urlencoded({ extended: false }))
     app.post("/produtos/salvar", bodyParser.json({ extended: false }))
     
-    app.post("/produtos/salvar", produtoController.salvar)
+    app.post("/produtos/salvar", [ produtoController.valida ], produtoController.salvar)
 }

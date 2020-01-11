@@ -13,6 +13,12 @@
     <div class="container">
         <h1>Cadastro de Livros</h1>
 
+        <% for (erro of erros) { %>
+            <div class="alert alert-danger">
+                <%= erro.msg %>
+            </div>
+        <% } %>
+
         <form action="salvar" method="post" class="col-6">
             <div class="form-group">
                 <label for="titulo">Titulo</label>
