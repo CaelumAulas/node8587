@@ -16,6 +16,7 @@ app.use("/assets", express.static('src/assets/'));
 // Código por debaixo do consign
 require('./routes/index')(app)
 require('./routes/produtos')(app)
+require('./routes/promocoes')(app)
 
 app.use(function(request, response, next){
     console.log("Página não encontrada: " + request.url)

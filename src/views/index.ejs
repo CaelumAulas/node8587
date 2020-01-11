@@ -21,4 +21,12 @@
     </div>
 </body>
 
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io()
+    socket.on('novaPromocao', function(msg) {
+        alert(msg)
+    })
+</script>
+
 </html>
