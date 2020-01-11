@@ -1,4 +1,5 @@
 const ProdutoDAO = require('../repository/produtoDAO')
+const expressValidator = require('express-validator')
 class ProdutoController {
 
     listar(request,response, next){ // essa função é a controller
@@ -29,7 +30,7 @@ class ProdutoController {
     }
 
     cadastro(request,response){
-        response.render('produtos/cadastro')
+        response.render('produtos/cadastro', {erros: []})
     }
 
     montaBody(request, response, next) {
@@ -50,21 +51,33 @@ class ProdutoController {
         })
     }
 
+    valida(request, response , next) {
+        expressValidator.check('preco', 'Preço inválido').isNumeric()(request, response , next), 
+        expressValidator.check('titulo', 'Título é obrigatório').notEmpty()(request, response , next)
+    }
+
     salvar(request, response, next){
         const livro = request.body;
 
-        const produtoDAO = new ProdutoDAO();
-        
-        const callback = function(erro, resultados){
-            if (erro !== null) {
-                next(erro)
-            } else {
-                response.redirect('/produtos') // isso envia um json -> api
-            }
-        }
+        const listaErros = expressValidator.validationResult(request).array()
 
-        // throw new Error("Deu ruim")
-        produtoDAO.cadastrar(livro, callback)
+        const tudoCerto =  listaErros.length === 0
+
+        if(!tudoCerto) {
+            response.status(400).render('produtos/cadastro', {erros: listaErros})
+        } else {
+            const produtoDAO = new ProdutoDAO();
+           
+            const callback = function(erro, resultados){
+                if (erro !== null) {
+                    next(erro)
+                } else {
+                    response.redirect('/produtos') // isso envia um json -> api
+                }
+            }
+
+            produtoDAO.cadastrar(livro, callback)
+        }
     }
 
 }
