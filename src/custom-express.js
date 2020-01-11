@@ -24,11 +24,24 @@ app.use(function(request, response, next){
 });
 
 app.use(function(request, response){
-    response.status(404).render('erros/404')
+    response
+        .status(404)
+        .format({
+            html: () =>  response.render('erros/404')
+        ,json: () => response.send({message: "Não encontrado"})
+        ,'application/xml': () => response.send(libXML("Não encontrado"))
+        })
+    
 })
 
 app.use(function(erro, request, response, next){
-    response.status(500).render('erros/500', { erro })
+    response
+        .status(500)
+        .format({
+            html: () =>  response.render('erros/500', { erro })
+        ,json: () => response.send({message: "Não encontrado"})
+        ,'application/xml': () => response.send(libXML(erro))
+        })
 
     if(process.env.NODE_ENV === 'development') {
         console.error(erro.message)
