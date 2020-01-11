@@ -16,10 +16,11 @@ app.use("/assets", express.static('src/assets/'));
 // Código por debaixo do consign
 require('./routes/index')(app)
 require('./routes/produtos')(app)
+require('./routes/promocoes')(app)
 
 
 app.use(function(request, response, next){
-    console.log("Página não encontrada: " + request.url())
+    console.log("Página não encontrada: " + request.url)
     next()
 });
 
@@ -28,8 +29,8 @@ app.use(function(request, response){
         .status(404)
         .format({
             html: () =>  response.render('erros/404')
-        ,json: () => response.send({message: "Não encontrado"})
-        ,'application/xml': () => response.send(libXML("Não encontrado"))
+            ,json: () => response.send({message: "Não encontrado"})
+            ,'application/xml': () => response.send(libXML("Não encontrado"))
         })
     
 })
