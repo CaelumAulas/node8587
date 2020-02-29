@@ -11,7 +11,7 @@ class ProdutoController {
       if (erro) {
         next(erro)
         return
-      } 
+      }
 
       response.format({
         "text/html": () => response.render("produtos/lista", { listaLivros: resultados }),
