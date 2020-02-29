@@ -9,8 +9,9 @@ class ProdutoController {
 
     produtoDAO.listar(function(erro, resultados) {
       if (erro) {
-        next(erro);
-      }
+        next(erro)
+        return
+      } 
 
       response.format({
         "text/html": () => response.render("produtos/lista", { listaLivros: resultados }),
