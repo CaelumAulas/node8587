@@ -12,6 +12,7 @@ app.use('/assets', express.static('src/assets/'));
 
 require('./routes/index')(app);
 require('./routes/produtos')(app);
+require('./routes/promocoes')(app);
 
 //middleware de not found (caso nenhuma das rotas sejam carregadas)
 app.use(function(request,response, next){

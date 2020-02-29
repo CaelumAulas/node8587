@@ -19,6 +19,17 @@
             <a href="/produtos" class="btn btn-primary">Produtos</a>
         </div>
     </div>
+
+    <script src="socket.io/socket.io.js"></script>
+
+    <script>
+        const socket = io()
+
+        socket.on('promocao', (msgPromocao) => {
+            alert(msgPromocao)
+        })
+
+    </script>
 </body>
 
 </html>
