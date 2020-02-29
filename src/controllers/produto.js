@@ -1,7 +1,10 @@
 const ProdutoDAO = require('../repository/produtoDAO')
 
+const { validationResult } = require("express-validator");
+
+
 class ProdutoController {
-  listar(request, response, next) {
+   listar(request, response, next) {
     const produtoDAO = new ProdutoDAO();
 
     produtoDAO.listar(function(erro, resultados) {
@@ -9,7 +12,11 @@ class ProdutoController {
         next(erro);
       }
 
-      response.render("produtos/lista", { listaLivros: resultados });
+      response.format({
+        "text/html": () => response.render("produtos/lista", { listaLivros: resultados }),
+        "application/json": () => response.send(resultados)
+      })
+    
     });
   }
 
@@ -17,9 +24,9 @@ class ProdutoController {
     response.render("produtos/cadastro", { validationErrors: null });
   }
 
-  salvar(request, response, validationErrors) {
-    
-    console.log(validationErrors);
+  salvar(request, response, next) {
+
+    const validationErrors = validationResult(request);
 
     if(validationErrors.errors.length > 0){
       response.render("produtos/cadastro", { validationErrors: validationErrors.errors.map(erro => erro.msg) });
@@ -29,7 +36,11 @@ class ProdutoController {
       const produtoDAO = new ProdutoDAO();
   
       produtoDAO.cadastrar(livro, function(erro, resultados) {
-        console.log(erro);
+        if(erro){
+          next(erro)
+        } else {
+          response.redirect("/produtos");
+        }
         response.redirect("/produtos");
       });
     }
