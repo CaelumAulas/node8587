@@ -3,15 +3,14 @@ const ProdutoDAO = require('../repository/produtoDAO')
 class ProdutoController {
   listar(request, response, next) {
     const produtoDAO = new ProdutoDAO();
-    const callback = function(erro, resultados) {
+
+    produtoDAO.listar(function(erro, resultados) {
       if (erro) {
         next(erro);
       }
 
       response.render("produtos/lista", { listaLivros: resultados });
-    };
-
-    produtoDAO.listar(callback);
+    });
   }
 
   cadastro(request, response) {
@@ -22,12 +21,10 @@ class ProdutoController {
     
     console.log(validationErrors);
 
-    if(validationErrors){
-      response.render("produtos/cadastro", { validationErrors });
+    if(validationErrors.errors.length > 0){
+      response.render("produtos/cadastro", { validationErrors: validationErrors.errors.map(erro => erro.msg) });
     }
-
     else {
-      
       const livro = request.body;
       const produtoDAO = new ProdutoDAO();
   
@@ -35,7 +32,6 @@ class ProdutoController {
         console.log(erro);
         response.redirect("/produtos");
       });
-
     }
 
   }

@@ -14,7 +14,9 @@
         <h1>Cadastro de Livros</h1>
 
         <% if (validationErrors) { %>
-        <h2><%= validationErrors.errors[0].msg %></h2>
+            <% for (let erro of validationErrors){ %>
+                <%= erro %>
+            <% } %>
         <% } %>
 
         <form action="salvar" method="post" class="col-6">

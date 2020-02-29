@@ -1,26 +1,24 @@
 class ProdutoDAO {
 
+  constructor() {
+    this.conexao = require("../repository/connectionFactory")();
+  }
+
     listar(funcaoDoController){
-         
-      const conexao = require("../repository/connectionFactory")();
+      this.conexao.query("select * from livros", funcaoDoController);
 
-      conexao.query("select * from livros", funcaoDoController);
-
-      conexao.end();
+      this.conexao.end();
       
     }
 
     cadastrar(livro, funcaoDoController){
-
-      const conexao = require("../repository/connectionFactory")();
-
-      conexao.query(
+      this.conexao.query(
           "INSERT INTO livros SET ?",
           livro,
           funcaoDoController
       )
 
-      conexao.end();
+      this.conexao.end();
 
     }
 }

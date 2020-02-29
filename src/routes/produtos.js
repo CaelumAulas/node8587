@@ -12,11 +12,16 @@ module.exports = function (app) {
 
   app.post(
       "/produtos/salvar", 
-      [check('titulo','titulo nao pode estar vazio').not().isEmpty()],
+      [
+        check('titulo','titulo nao pode estar vazio').not().isEmpty(), 
+        check('preco', 'Preço numero').isNumeric()
+      ],
       function(request, response){
         const validationErrors = validationResult(request);
         produtoController.salvar(request, response, validationErrors);
       }
   );
+
+  app.post('/prod/salvar', produtoController.salvar)
   
 }
